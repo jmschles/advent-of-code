@@ -54,7 +54,7 @@ class CircuitPart
       @output.input_val = override_val
       return
     end
-    return unless inputs.all? { |i| !i.input_val.nil? }
+    return unless inputs.all?(&:input_val)
     @output.input_val = @operator ? perform_operation : inputs.first.input_val
   end
 
@@ -83,7 +83,7 @@ class Circuit
   end
 
   def resolve(override: false, override_val: nil)
-    until wires.all? { |w| !w.input_val.nil? }
+    until wires.all?(&:input_val)
       parts.each { |part| part.resolve_output(override: override, override_val: override_val) }
     end
   end
